@@ -1,10 +1,10 @@
 /* Simple linker script for the ucore kernel.
    See the GNU ld 'info' manual ("info ld") to learn the syntax. */
 
-OUTPUT_ARCH(riscv)
+OUTPUT_ARCH(sw_64:sw6b)
 ENTRY(kern_entry)
 
-BASE_ADDRESS = 0x80200000;
+BASE_ADDRESS = 0x20000000;
 
 SECTIONS
 {

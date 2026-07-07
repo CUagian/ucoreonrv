@@ -6,11 +6,11 @@ SLASH	:= /
 V       := @
 
 #ifndef GCCPREFIX
-GCCPREFIX := riscv64-unknown-elf-
+GCCPREFIX := sw_64sw6b-sunway-linux-gnu-
 #endif
 
 ifndef QEMU
-QEMU := qemu-system-riscv64
+QEMU := /mnt/hgfs/D/env/qemu-bin/qemu-system-sw64
 endif
 
 
@@ -27,13 +27,13 @@ HOSTCFLAGS	:= -Wall -O2
 GDB		:= $(GCCPREFIX)gdb
 
 CC		:= $(GCCPREFIX)gcc
-CFLAGS  := -mcmodel=medany -std=gnu99 -Wno-unused -Werror
+CFLAGS  := -std=gnu99 -Wno-unused -Werror
 CFLAGS	+= -fno-builtin -Wall -O2 -nostdinc $(DEFS)
 CFLAGS	+= -fno-stack-protector -ffunction-sections -fdata-sections
-CTYPE	:= c S
+CTYPE	:= c S 
 
 LD      := $(GCCPREFIX)ld
-LDFLAGS	:= -m elf64lriscv
+LDFLAGS	:= -m elf64sw_64
 LDFLAGS	+= -nostdlib --gc-sections
 
 OBJCOPY := $(GCCPREFIX)objcopy
@@ -118,7 +118,7 @@ $(kernel): tools/kernel.ld
 
 $(kernel): $(KOBJS)
 	@echo + ld $@
-	$(V)$(LD) $(LDFLAGS) -T tools/kernel.ld -o $@ $(KOBJS)
+	$(V)$(LD) $(LDFLAGS) -T tools/kernel.ld -o $@ $(KOBJS) -L/mnt/hgfs/D/env/swgcc710-cross-6b-9916/usr/lib/gcc/sw_64sw6b-sunway-linux-gnu/7.1.0 -lgcc
 	@$(OBJDUMP) -S $@ > $(call asmfile,kernel)
 	@$(OBJDUMP) -t $@ | $(SED) '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $(call symfile,kernel)
 

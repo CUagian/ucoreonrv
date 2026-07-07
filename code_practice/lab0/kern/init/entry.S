@@ -1,15 +1,18 @@
 #include <mmu.h>
 #include <memlayout.h>
 
-    .section .text,"ax",%progbits
+    .section .text.kern_entry,"ax",%progbits
     .globl kern_entry
 kern_entry:
-    la sp, bootstacktop
+    br      $gp, 1f
+1:  ldgp    $gp, 0($gp)
+    br      $1, 2f
+    .quad   bootstacktop
 
-    tail kern_init
+2:  ldl     $sp, 0($1)
+    br      kern_init
 
 .section .data
-    # .align 2^12
     .align PGSHIFT
     .global bootstack
 bootstack:
